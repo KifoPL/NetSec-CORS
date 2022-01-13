@@ -1,14 +1,15 @@
-﻿namespace Sample_App_Consuming_API;
+﻿HttpClient httpClient = new();
 
-public class Program
+var data = async () =>
 {
-	private static readonly HttpClient HttpClient = new();
+	string result;
+	try { result = await httpClient.GetStringAsync("https://localhost:7042/page/3"); }
+	catch (HttpRequestException e) { result = $"{e.StatusCode?.ToString() ?? "No Code"} error -\n{e.Message}"; }
+	catch (Exception e) { result = $"{e.GetType().Name} error -\n{e.Message}"; }
 
-	public static async Task Main(string[] args)
-	{
+	return result;
+};
 
-		string json = await HttpClient.GetStringAsync("https://localhost:7042/page/3");
+string json = await data.Invoke();
 
-		Console.WriteLine(json);
-	}
-}
+Console.WriteLine(json);
