@@ -15,9 +15,18 @@
 	</code>
 </div>
 
+<button class="btn btn-secondary" @onclick="_ => SeedData()">Seed data</button>
+
+<div class="my-1">
+	<h2 class="fs-2">Seed data:</h2>
+	<code>
+		@seedData
+	</code>
+</div>
 
 @code{
 	private string data = "no data";
+	private string seedData = "didn't seed any data.";
 
 	private async Task GetData()
 	{
@@ -29,6 +38,24 @@
 		catch (Exception e) {
 			data = $"{e.GetType().Name} error -\n{e.Message}";
 		}
-		
 	}
+
+	private async Task SeedData()
+	{
+		HttpResponseMessage response;
+
+		HttpContent content = JsonContent.Create("");
+		try
+		{
+			response = await _client.PostAsync("https://localhost:7042/seed/10", content);
+			seedData = await response.Content.ReadAsStringAsync();
+		}
+		catch (HttpRequestException e) {
+			seedData = $"{e.StatusCode?.ToString() ?? "No Code"} error -\n{e.Message}";
+		}
+		catch (Exception e) {
+			seedData = $"{e.GetType().Name} error -\n{e.Message}";
+		}
+	}
+
 }
