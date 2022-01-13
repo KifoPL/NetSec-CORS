@@ -1,0 +1,27 @@
+﻿@page
+@using System.Security.Cryptography.X509Certificates
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+	<button class="btn btn-primary"> Get Data</button>
+    
+	<div class="my-2">
+
+	</div>
+</div>
+
+
+@{
+	HttpClient _client = new();
+	string data = "no data";
+
+	async Task<string> GetData()
+	{
+		data = await _client.GetStringAsync($"https://localhost:7042/page/1");
+		return data;
+	}
+}
