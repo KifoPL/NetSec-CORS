@@ -21,6 +21,7 @@
 
 	private async Task GetData()
 	{
+		data = "loading...";
 		try { data = await _client.GetStringAsync("https://localhost:7042/page/1"); }
 		catch (HttpRequestException e) {
 			data = $"{e.StatusCode?.ToString() ?? "No Code"} error -\n{e.Message}";
